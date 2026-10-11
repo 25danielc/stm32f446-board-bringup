@@ -2,17 +2,10 @@
 
 ## Option A: just flash a prebuilt file (no compiler needed)
 
-Pick the file in `prebuilt/` that matches the frequency of crystal Y1
-(8, 12, 16 or 25 MHz); it's usually printed on the crystal can. A build
-for the wrong frequency is not harmless:
-- crystal **faster** than the build (e.g. 16 MHz fitted, 8 MHz file): the PLL
-  and the CPU run far beyond their limits; expect "HSE starts FAIL" or a
-  crash (very fast LED blink).
-- crystal **slower** than the build (e.g. 8 MHz fitted, 25 MHz file): the
-  chip only runs slower; the text after "HSE starts" is garbled, or HSE
-  is wrongly reported as FAIL, and every other test still runs.
-
-So if you can't read the marking, start with 25 MHz and work downwards.
+`prebuilt/board_test_8MHz.bin` is built for this board's 8 MHz crystal Y1.
+For a board with a different crystal, build it yourself (Option B) with
+`HSE=` set to that frequency: a build for a slower crystal than the one
+fitted overclocks the chip far beyond its limits.
 
 ### With an ST-LINK on J3A (macOS)
     brew install stlink
@@ -56,4 +49,4 @@ Use J2A (UART2) or J1A (UART1); the report prints on both.
 - `Core/Src/board_test.c`  the tests and peripheral settings
 - `Core/Src/main.c`        pin/clock setup the HAL calls back into, fault handler
 - `Drivers/`               ST's STM32F4 HAL (only the modules used) and Arm CMSIS (BSD-3 / Apache-2.0, licenses included)
-- `prebuilt/`              ready-made `.bin` files, one per crystal frequency
+- `prebuilt/`              ready-made `.bin` for the 8 MHz crystal
